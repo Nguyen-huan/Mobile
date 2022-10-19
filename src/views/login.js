@@ -1,42 +1,58 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, SafeAreaView, Image, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, SafeAreaView, Image, ImageBackground, Alert } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-// const Stack = createStackNavigator();
-// function HomeScreen() {
-//   return (
-//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-//       <Text>Home Screen</Text>
-//     </View>
-//   );
-// }
-// function MyStack() {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen name="Home" component={HomeScreen} />
-//     </Stack.Navigator>
-//   );
-// }
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
+const userList = [
+  {
+    id: '1',
+    userName: 'john',
+    password: '1234',
+  },
+  {
+    id: '2',
+    userName: 'mack',
+    password: '1234',
+  }
+]
 export default Login = ({ navigation }) => {
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+
+  const setData = async () => {
+    if (userName.length == 0 || password.length == 0) {
+      Alert.alert("Fields is required!");
+    }
+    else {
+      try {
+        const userData = {
+          userName: userName,
+          password: password,
+        }
+        await AsyncStorage.setItem('UserData', JSON.stringify(userData));
+        navigation.navigate('Home');
+      }
+      catch (err) { console.log(err) }
+    }
+  }
   // let a = require('../assets/adaptive-icon.png');
-
-
   return (
     <ImageBackground style={{ height: '100%', width: '100%' }} source={require('../images/umberto-FewHpO4VC9Y-unsplash.jpg')} resizeMode="stretch">
       <SafeAreaView style={{ flex: 1 }}>
         <View View style={styles.container} >
           <Text style={styles.title}>Login</Text>
           <View>
-            <TextInput style={styles.textInput} placeholder="User Name" />
+            <TextInput style={styles.textInput} placeholder="User Name" onChangeText={(value) => setUserName(value)} />
           </View>
           <View>
-            <TextInput style={styles.textInput} placeholder="Password" />
+            <TextInput style={styles.textInput} placeholder="Password" onChangeText={(value) => setPassword(value)} />
           </View>
           <View style={styles.button}>
             <Button title="Login"
-              onPress={() => {
-                navigation.navigate('home')
-              }}
+              onPress={() =>
+                setData()
+              }
             />
           </View>
           <View style={styles.textBox}>
@@ -74,9 +90,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     borderWidth: 1,
     marginBottom: 20,
-    color: 'white',
+    color: 'black',
     borderColor: 'white',
-
+    backgroundColor: 'white'
   },
   label: {
     fontSize: 20,
