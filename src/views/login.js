@@ -25,15 +25,19 @@ export default Login = ({ navigation }) => {
       Alert.alert("Fields is required!");
     }
     else {
-      try {
-        const userData = {
-          userName: userName,
-          password: password,
+      for (let i = 0; i < userList.length; i++) {
+        if (i.userName == userName && i.password == password) {
+          try {
+            const userData = {
+              userName: userName,
+              password: password,
+            }
+            await AsyncStorage.setItem('UserData', JSON.stringify(userData));
+            navigation.navigate('Home');
+          }
+          catch (err) { console.log(err) }
         }
-        await AsyncStorage.setItem('UserData', JSON.stringify(userData));
-        navigation.navigate('Home');
       }
-      catch (err) { console.log(err) }
     }
   }
   // let a = require('../assets/adaptive-icon.png');
