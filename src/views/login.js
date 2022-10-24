@@ -3,41 +3,31 @@ import { StyleSheet, Text, View, TextInput, Button, SafeAreaView, Image, ImageBa
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState } from 'react';
-const userList = [
-  {
-    id: '1',
-    userName: 'john',
-    password: '1234',
-  },
-  {
-    id: '2',
-    userName: 'mack',
-    password: '1234',
-  }
-]
+import { useState, useEffect } from 'react';
+
 export default Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-
+  useEffect(() => {
+    fetch("http://localhost:3000/users")
+      .then(console.log("success"))
+      .catch((error) => console.log(error))
+  }, [])
   const setData = async () => {
     if (userName.length == 0 || password.length == 0) {
       Alert.alert("Fields is required!");
     }
+
     else {
-      for (let i = 0; i < userList.length; i++) {
-        if (i.userName == userName && i.password == password) {
-          try {
-            const userData = {
-              userName: userName,
-              password: password,
-            }
-            await AsyncStorage.setItem('UserData', JSON.stringify(userData));
-            navigation.navigate('Home');
-          }
-          catch (err) { console.log(err) }
+      try {
+        const userData = {
+          userName: userName,
+          password: password,
         }
+        await AsyncStorage.setItem('UserData', JSON.stringify(userData));
+        navigation.navigate('Home');
       }
+      catch (err) { console.log(err) }
     }
   }
   // let a = require('../assets/adaptive-icon.png');
