@@ -1,6 +1,8 @@
-import { View, Text, Image, FlatList } from 'react-native'
-import React from 'react'
+import { View, Text, Image, FlatList, Dimensions, StyleSheet } from 'react-native'
+import React, { useState } from 'react'
 import Slide from '../../components/Slide'
+const screen = Dimensions.get("screen");
+
 const slides = [
   {
     id: 1,
@@ -35,15 +37,54 @@ const slides = [
   },
 ]
 export default function Slides() {
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+  const updateCurrentSlideIndex = e => {
+    const contentOffsetX = e.nativeEvent.contentOffset.x
+    const currentIndex = Math.round(contentOffsetX / 393);
+    setCurrentSlideIndex(currentIndex)
+  }
   return (
-    <View style={{ width: '100%', height: '100%' }}>
-      <FlatList
-        pagingEnabled
-        data={slides}
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item }) => <Slide item={item} />}
-      />
-    </View>
+    <>
+      <View style={{ width: '100%', height: '100%', position: 'relative', }}>
+
+        <FlatList
+          onMomentumScrollEnd={updateCurrentSlideIndex}
+          pagingEnabled
+          data={slides}
+          horizontal
+          contentContainerStyle={{ height: 1200 * 0.75 }}
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => <Slide item={item} />}
+        />
+      </View>
+      <View style={{
+        flex: 1,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        position: 'absolute',
+        bottom: 100,
+      }}>
+        {slides.map((_, index) =>
+          <View
+            key={index}
+            style={[styles.indicators, currentSlideIndex == index && {
+              backgroundColor: 'white',
+              width: 30
+            }]}>
+          </View>
+        )}
+      </View>
+    </>
   )
 }
+
+const styles = StyleSheet.create({
+  indicators: {
+    height: 5,
+    width: 10,
+    backgroundColor: 'white',
+    marginHorizontal: 3,
+    borderRadius: 2
+  }
+})
