@@ -3,7 +3,7 @@ import React from 'react'
 
 export default function slideItem({ item }) {
   return (
-    <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#5EA33A', padding: 30 }}>
+    <View style={{ width: 395, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', backgroundColor: '#5EA33A' }}>
 
       <Image style={{ width: 100, height: 100, marginBottom: 70 }} source={
         item.image
