@@ -13,9 +13,10 @@ export default HomePage = () => {
         .then(value => {
           if (value != null) {
             const userData = JSON.parse(value);
-            setUserName(userData.userName);
+            setUserName(userData.fullName);
           }
         })
+        .catch(err => { console.log('loi', err) })
     }
     catch { console.log(err); }
   }

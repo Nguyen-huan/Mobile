@@ -38,7 +38,9 @@ export default function Landing({ navigation }) {
         alignItems: 'center',
         borderRadius: 50,
         marginTop: 20
-      }}>
+      }}
+        onPress={() => navigation.navigate('Register')}
+      >
         <Text style={{ fontSize: 20, color: '#5EA33A' }}>Sign Up</Text>
       </TouchableOpacity>
     </View>

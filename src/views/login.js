@@ -2,14 +2,10 @@ import { StatusBar } from 'expo-status-bar';
 import { AntDesign } from '@expo/vector-icons';
 import {
   StyleSheet, Text, View,
-  TextInput, Button,
   SafeAreaView,
-  Image, ImageBackground,
   TouchableOpacity,
-  Alert
+  Alert, TextInput,
 } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState, useEffect } from 'react';
 
@@ -17,9 +13,10 @@ export default Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   // useEffect(() => {
-  //   fetch("http://localhost:3000/users")
-  //     .then(console.log("success"))
-  //     .catch((error) => console.log(error))
+  //   fetch("https://jsonplaceholder.typicode.com/users")
+  //     .then((res) => res.json())
+  //     // .then((res) => console.log(res))
+  //     .catch((error) => console.log('Loi:  ', error))
   // }, [])
   const setData = async () => {
     if (userName.length == 0 || password.length == 0) {
@@ -28,12 +25,22 @@ export default Login = ({ navigation }) => {
 
     else {
       try {
-        const userData = {
-          userName: userName,
-          password: password,
-        }
-        await AsyncStorage.setItem('UserData', JSON.stringify(userData));
-        navigation.navigate('Home');
+        // await AsyncStorage.setItem('UserData', JSON.stringify(userData));
+        await AsyncStorage.getItem('UserData')
+          .then(value => {
+            if (value != null) {
+              const userData = JSON.parse(value);
+              return userData
+            }
+          })
+          .then(userData => {
+            userData.email == userName || userData.phoneNumber == userName
+              ? (userData.password == password
+                ? navigation.navigate('Home')
+                : Alert.alert("User Name or Password is incorrect"))
+              : Alert.alert("User Name is incorrect")
+          });
+
       }
       catch (err) { console.log(err) }
     }
@@ -47,7 +54,7 @@ export default Login = ({ navigation }) => {
       >
         <AntDesign name="left" size={30} color="black" />
       </TouchableOpacity>
-      <Text style={styles.title}>Sign Up</Text>
+      <Text style={styles.title}>Sign In</Text>
       <View View style={styles.container} >
         <View>
           <TextInput style={styles.textInput}
@@ -63,7 +70,10 @@ export default Login = ({ navigation }) => {
             onChangeText={(value) => setPassword(value)}
             secureTextEntry={true} />
         </View>
-        <TouchableOpacity style={[styles.button, { marginTop: 10 }]} >
+        <TouchableOpacity
+          style={[styles.button, { marginTop: 10 }]}
+          onPress={() => setData()}
+        >
           <Text style={{ fontSize: 20, color: 'white' }}>Login</Text>
         </TouchableOpacity>
         <Text style={{ fontSize: 25, marginTop: 50, marginBottom: 50 }}> OR </Text>
@@ -121,8 +131,4 @@ const styles = StyleSheet.create({
     color: "#06bcee",
     marginBottom: 20,
   },
-  image_1: {
-    height: 100,
-    width: 100
-  }
 });
