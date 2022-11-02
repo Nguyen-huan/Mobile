@@ -7,25 +7,17 @@ import {
   Alert, TextInput,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 export default Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  // useEffect(() => {
-  //   fetch("https://jsonplaceholder.typicode.com/users")
-  //     .then((res) => res.json())
-  //     // .then((res) => console.log(res))
-  //     .catch((error) => console.log('Loi:  ', error))
-  // }, [])
   const setData = async () => {
     if (userName.length == 0 || password.length == 0) {
       Alert.alert("Fields is required!");
     }
-
     else {
       try {
-        // await AsyncStorage.setItem('UserData', JSON.stringify(userData));
         await AsyncStorage.getItem('UserData')
           .then(value => {
             if (value != null) {
@@ -35,12 +27,13 @@ export default Login = ({ navigation }) => {
           })
           .then(userData => {
             userData.email == userName || userData.phoneNumber == userName
-              ? (userData.password == password
-                ? navigation.navigate('Home')
-                : Alert.alert("User Name or Password is incorrect"))
+              ? (
+                userData.password == password
+                  ? navigation.navigate('Home')
+                  : Alert.alert("User Name or Password is incorrect")
+              )
               : Alert.alert("User Name is incorrect")
-          });
-
+          })
       }
       catch (err) { console.log(err) }
     }

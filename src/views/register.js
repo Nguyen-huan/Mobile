@@ -8,7 +8,7 @@ import {
 import { AntDesign } from '@expo/vector-icons'
 import React, { useState } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-
+import uuid from 'react-uuid'
 
 export default function Register({ navigation }) {
   const [fullName, setFullName] = useState('');
@@ -29,19 +29,27 @@ export default function Register({ navigation }) {
 
     else {
       try {
-        const userData = {
+        let userData = {}
+        const item = {
+          id: uuid(),
           fullName: fullName,
           password: password,
           email: email,
           phoneNumber: phoneNumber
         }
+        userData = item
         await AsyncStorage.setItem('UserData', JSON.stringify(userData));
-        navigation.navigate('Home');
+        const getFullName = fullName
+        const getPassword = password
+        navigation.navigate('Login', getFullName, getPassword);
       }
       catch (err) { console.log(err) }
+      setFullName('')
+      setPhoneNumber('')
+      setPassword('')
+      setEmail('')
     }
   }
-  // let a = require('../assets/adaptive-icon.png');
   return (
     <SafeAreaView>
       <TouchableOpacity

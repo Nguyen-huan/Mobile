@@ -12,7 +12,7 @@ export default RootComponent = () => {
   return (
     // <Login />
     <NavigationContainer>
-      <Stack.Navigator initialRouteName='Landing' screenOptions={{ headerShown: false }}>
+      <Stack.Navigator initialRouteName='Slide' screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Landing" component={Landing} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen name="Login" component={Login} />

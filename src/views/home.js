@@ -16,9 +16,8 @@ export default HomePage = () => {
             setUserName(userData.fullName);
           }
         })
-        .catch(err => { console.log('loi', err) })
     }
-    catch { console.log(err); }
+    catch { console.log('loi', err); }
   }
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
