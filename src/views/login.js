@@ -1,5 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, SafeAreaView, Image, ImageBackground, Alert } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
+import {
+  StyleSheet, Text, View,
+  TextInput, Button,
+  SafeAreaView,
+  Image, ImageBackground,
+  TouchableOpacity,
+  Alert
+} from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -8,11 +16,11 @@ import { useState, useEffect } from 'react';
 export default Login = ({ navigation }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
-  useEffect(() => {
-    fetch("http://localhost:3000/users")
-      .then(console.log("success"))
-      .catch((error) => console.log(error))
-  }, [])
+  // useEffect(() => {
+  //   fetch("http://localhost:3000/users")
+  //     .then(console.log("success"))
+  //     .catch((error) => console.log(error))
+  // }, [])
   const setData = async () => {
     if (userName.length == 0 || password.length == 0) {
       Alert.alert("Fields is required!");
@@ -32,75 +40,75 @@ export default Login = ({ navigation }) => {
   }
   // let a = require('../assets/adaptive-icon.png');
   return (
-    <ImageBackground style={{ height: '100%', width: '100%' }} source={require('../images/umberto-FewHpO4VC9Y-unsplash.jpg')} resizeMode="stretch">
-      <SafeAreaView style={{ flex: 1 }}>
-        <View View style={styles.container} >
-          <Text style={styles.title}>Login</Text>
-          <View>
-            <TextInput style={styles.textInput} placeholder="User Name" onChangeText={(value) => setUserName(value)} />
-          </View>
-          <View>
-            <TextInput style={styles.textInput} placeholder="Password" onChangeText={(value) => setPassword(value)} />
-          </View>
-          <View style={styles.button}>
-            <Button title="Login"
-              onPress={() =>
-                setData()
-              }
-            />
-          </View>
-          <View style={styles.textBox}>
-            <Text style={styles.text}>Forget Password?</Text>
-            <Text style={styles.text}>Register?</Text>
-          </View>
-          {/* <Image
-        blurRadius={0}
-        fadeDuration={4000}
-        source={{
-          uri: "https://picsum.photos/200",
-          height: 100, width: 100
-        }} />
-      <Image style={styles.image_1}
-        source={1}
-      /> */}
-        </View >
-      </SafeAreaView>
-    </ImageBackground >
+    <SafeAreaView>
+      <TouchableOpacity
+        style={{ marginTop: 50, marginLeft: 10 }}
+        onPress={() => navigation.goBack()}
+      >
+        <AntDesign name="left" size={30} color="black" />
+      </TouchableOpacity>
+      <Text style={styles.title}>Sign Up</Text>
+      <View View style={styles.container} >
+        <View>
+          <TextInput style={styles.textInput}
+            placeholder="Email Or Phone Number"
+            placeholderTextColor={'#ccc'}
+            onChangeText={(value) => setUserName(value)} />
+        </View>
+        <View>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Password"
+            placeholderTextColor={'#ccc'}
+            onChangeText={(value) => setPassword(value)}
+            secureTextEntry={true} />
+        </View>
+        <TouchableOpacity style={[styles.button, { marginTop: 10 }]} >
+          <Text style={{ fontSize: 20, color: 'white' }}>Login</Text>
+        </TouchableOpacity>
+        <Text style={{ fontSize: 25, marginTop: 50, marginBottom: 50 }}> OR </Text>
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#344d91' }]} >
+          <Text style={{ fontSize: 20, color: 'white' }}>Facebook Login</Text>
+        </TouchableOpacity>
+      </View >
+    </SafeAreaView >
   );
 }
 
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
-    height: '100%',
-    justifyContent: 'center',
     alignItems: 'center',
   },
   textInput: {
     padding: 15,
     height: 60,
     width: 350,
-    fontSize: 20,
+    fontSize: 17,
     borderWidth: 1,
-    marginBottom: 20,
     color: 'black',
-    borderColor: 'white',
-    backgroundColor: 'white'
+    borderColor: '#ccc',
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 50,
+    marginBottom: 20,
   },
   label: {
     fontSize: 20,
   },
   title: {
-    color: 'white',
-    fontSize: 50,
-    margin: 60,
+    color: '#5ea33a',
+    fontSize: 30,
+    marginLeft: 15,
+    marginTop: 50,
+    marginBottom: 50,
   },
   button: {
-    width: 350,
-    fontSize: 50,
-    height: 60,
-    color: 'black',
+    width: 280, height: 60,
+    backgroundColor: '#5EA33A',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50
   },
   textBox: {
     marginTop: 100,
